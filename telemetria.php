@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 
+<!-- BLOCCO LOGICO -->
 <?php
     # Dati
     $ping_grezzi = [45, 120, -1, 32, 210, 85, -1, 18, 95, 310, 45, 60, -1, 150, 28, 240, 18, 72];
@@ -72,6 +73,10 @@
         return $minimo;
     }
 ?>
+
+
+
+<!-- STRUTTURA HTML -->
 
 <html lang="en">
 <head>
