@@ -32,6 +32,8 @@
 
     $top_3_veloci = array_slice($ping_ordinati, 0, 3);
 
+    $controllo_100ms = in_array(100, $ping_validi) ? "Sì" : "No";
+
 
 
     # --- Funzioni ---
@@ -80,50 +82,47 @@
 <body>
     <h1> Analizzatore di Telemetria Server </h1>
 
-    <h2> Ping Grezzi </h2>
+    <h2> Riepilogo </h2>
 
     <ul>
-        <?php foreach($ping_grezzi as $ping): ?>
-            <?= "<li " ?>
+        <li> <?= count($ping_grezzi) ?> pacchetti rilevati </li>
+        <li> <?= count($ping_validi) ?> pacchetti validi </li>
+        <li> <?= $pacchetti_persi ?> pacchetti persi </li>
 
-            <?php if($ping == -1): ?>
-                <li style="color: red">
-
-            <?php elseif($ping >= 0): ?>
-
-                <?php if($ping >= 150): ?>
-                    <li style="color: orange">
-
-                <?php else: ?>
-                    <li style="color: green">
-
-                <?php endif; ?>
-            <?php endif; ?>
-
-            <?= $ping ?>
-
-            </li>
-        <?php endforeach; ?>
-    </ul>
-
-    <p>
-        Numero di pacchetti persi:
-        <?= $pacchetti_persi ?>
-    </p>
-
-    <h2> Informazioni Utili </h2>
-    <ul>
         <li> Tempo medio: <?= media($ping_validi) ?> </li>
-        <li> Ping massimo: <?= massimo($ping_validi) ?> </li>
         <li> Ping minimo: <?= minimo($ping_validi) ?> </li>
-        <li>
-            E' presente un ping pari a 100ms?
-            <?php if(in_array(100, $ping_validi)): ?>
-                <?= "Sì" ?>
-            <?php else: ?>
-                <?= "No" ?>
-            <?php endif; ?>
-        </li>
+        <li> Ping massimo: <?= massimo($ping_validi) ?> </li>
+
+        <li> E' presente un ping pari a 100ms? <?= $controllo_100ms ?> </li>
     </ul>
+
+    <h3> 3 tempi migliori </h2>
+    <p> <?= implode("ms - ", $top_3_veloci); ?>ms </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th> n. prog. </th>
+                <th> valore (ms) </th>
+                <th> stato </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <?php foreach($ping_validi as $index => $ping): ?>
+                <tr>
+                    <td> <?= $index + 1 ?> </td>
+                    <td> <?= $ping ?> </td>
+                    <td>
+                        <?php if($ping >= 150): ?>
+                            <?= "CRITICO" ?>
+                        <?php else: ?>
+                            <?= "NORMALE" ?>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
 </body>
 </html>
