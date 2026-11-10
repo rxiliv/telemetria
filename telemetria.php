@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 
 <?php
-    # Dati grezzi in ms
+    # Dati
     $ping_grezzi = [45, 120, -1, 32, 210, 85, -1, 18, 95, 310, 45, 60, -1, 150, 28, 240, 18, 72];
     $ping_validi = [];
     $ping_critici = [];
-    $ping_unici = [];
     $pacchetti_persi = 0;
 
+    # Inizializzazione e modifiche variabili
     $ping_grezzi[] = 55;
     $ping_grezzi[] = 190;
     $ping_grezzi[] = 12;
 
     foreach($ping_grezzi as $ping) {
-        if ($ping >= 0) {
+        if ($ping == -1) {
+            $pacchetti_persi++;
+        }
+        elseif ($ping >= 0) {
             $ping_validi[] = $ping;
 
             if ($ping >= 150) {
@@ -23,6 +26,15 @@
     }
 
     $ping_unici = array_unique($ping_validi);
+
+    $ping_ordinati = $ping_validi;
+    sort($ping_ordinati);
+
+    $top_3_veloci = array_slice($ping_ordinati, 0, 3);
+
+
+
+    # --- Funzioni ---
 
     function media($array) {
         $somma = 0;
@@ -76,14 +88,15 @@
 
             <?php if($ping == -1): ?>
                 <li style="color: red">
-                <?php $pacchetti_persi++; ?>
 
             <?php elseif($ping >= 0): ?>
+
                 <?php if($ping >= 150): ?>
                     <li style="color: orange">
 
                 <?php else: ?>
                     <li style="color: green">
+
                 <?php endif; ?>
             <?php endif; ?>
 
@@ -103,6 +116,14 @@
         <li> Tempo medio: <?= media($ping_validi) ?> </li>
         <li> Ping massimo: <?= massimo($ping_validi) ?> </li>
         <li> Ping minimo: <?= minimo($ping_validi) ?> </li>
+        <li>
+            E' presente un ping pari a 100ms?
+            <?php if(in_array(100, $ping_validi)): ?>
+                <?= "Sì" ?>
+            <?php else: ?>
+                <?= "No" ?>
+            <?php endif; ?>
+        </li>
     </ul>
 </body>
 </html>
