@@ -13,6 +13,7 @@
     $ping_grezzi[] = 190;
     $ping_grezzi[] = 12;
 
+    # (argomenta in verifica perché (non) è stato messo in funzioni)
     foreach($ping_grezzi as $ping) {
         if ($ping == -1) {
             $pacchetti_persi++;
